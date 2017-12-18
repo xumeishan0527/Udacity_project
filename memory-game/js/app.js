@@ -156,7 +156,7 @@ function judgeResult(index, k) {
     clickList.i = index;
     clickList_two.push(clickList);
 
-    stepNumber.textContent = 'step number is ' + k;//显示点击次数
+    stepNumber.textContent = 'step number is: ' + k;//显示点击次数
     //调用星级评分函数
     starsNum(k);
 
@@ -166,7 +166,6 @@ function judgeResult(index, k) {
         //若相等实现果冻效果，并改变颜色
         if (clickList_two[0].i_className === clickList_two[1].i_className) {
             for (var j = 0; j < clickList_two.length; j++) {
-                console.log(clickList_two[j].i);
 
                 list[clickList_two[j].i].style.cssText =
                     'animation:changeScale 0.6s ease';
@@ -214,6 +213,12 @@ function starsNum(nub) {
         stars.innerHTML = '<li><i class="fa fa-star"></i></li>';
         moves.textContent = 1;
     }
+    if (nub < 20) {
+        stars.innerHTML = '<li><i class="fa fa-star"></i></li>' +
+            '<li><i class="fa fa-star"></i></li>' +
+            '<li><i class="fa fa-star"></i></li>';
+        moves.textContent = 3;
+    }
 }
 
 /**
@@ -221,9 +226,12 @@ function starsNum(nub) {
  */
 function judgeStop() {
     var shadeContentTime = document.getElementById('shadeContentTime');
+    var shadeContentStars = document.getElementById('shadeContentStars');
+    var moves = document.getElementById('moves');
     if (allIndex.length < 8) return;
     shade.style.display = 'flex';
     shadeContentTime.textContent = '用时：' + minute + '分' + second + '秒' + millisecond + '毫秒';
+    shadeContentStars.textContent = '评分：' + moves.textContent + '颗星';
     stopTime();
 }
 
@@ -232,6 +240,11 @@ function judgeStop() {
  */
 function restart() {
 
+    var k = 0,
+        stepNumber = document.getElementById('stepNumber');
+    stepNumber.textContent = 'step number is: 0' ;
+
+    starsNum(k);
     stopTime();
     allIndex = [];
 
@@ -243,6 +256,7 @@ function restart() {
 
     init();
 }
+
 //监听重置按键点击事件
 restartBtn.addEventListener('click', restart);
 //监听完成游戏后‘再挑战一次’按键点击事件
@@ -254,6 +268,11 @@ recur.onclick = function () {
 stop.onclick = function () {
     shade.style.display = 'none';
 };
+
+//TODO:动画渲染问题
+//TODO:将数值保存在本地存储器
+//TODO:list问题
+//TODO:用js遍历渲染每个cards
 
 
 
