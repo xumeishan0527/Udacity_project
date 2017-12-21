@@ -164,8 +164,8 @@ function judgeResult(index, k) {
   clickList.i_className = list[index].lastElementChild.firstElementChild.getAttribute('class');
   clickList.i = index;
   clickList_two.push(clickList);
-
-  stepNumber.textContent = 'step number is: ' + k;//显示点击次数
+  //显示点击次数
+  stepNumber.textContent = 'step number is: ' + k;
   //调用星级评分函数
   starsNum(k);
 

@@ -60,13 +60,13 @@ h1 {
     border-radius: 10px;
 }
 /*‘恭喜过关’样式*/
-.shadeContent p:nth-child(1){
+.shadeContent p:nth-child(1) {
     font: 30px "sans-serif";
     text-align: center;
     color:#de3f40;
 }
 /*‘用时’样式*/
-.shadeContent p:not(:first-child){
+.shadeContent p:not(:first-child) {
     font: 20px/24px "sans-serif";
     text-align: center;
     color:#333;
