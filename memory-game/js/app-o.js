@@ -31,7 +31,7 @@ Game.prototype.init = function () {
         myDeck.listenCardClick();
         for (var i = 0; i < self.list.length; i++) {
             self.list[i].style.cssText =
-                'animation:changeRotate 0.6s ease reverse;' +
+                'animation:changeRotate 0.6s ease reverse forwards;' +
                 'transform:rotateY(0)';
             self.list[i].addEventListener('webkitAnimationEnd', function () {
                 this.style.webkitAnimation = '';
@@ -63,26 +63,26 @@ Game.prototype.init = function () {
  */
 Game.prototype.restart = function () {
 
-    /*方法一：存在问题*/
-    // var k = 0,
-    //     stepNumber = document.getElementById('stepNumber');
-    //     stepNumber.textContent = 'step number is: 0';
-    //
-    // myDeck.starsNum(k);
-    // myTimer.stopTime();
-    // myDeck.allIndex = [];
-    //
-    // for (var i = 0; i < this.list.length; i++) {
-    //     this.list[i].style.webkitAnimation = '';
-    //     this.list[i].style.cssText = 'transform:rotateY(180deg)';
-    //     this.list[i].lastElementChild.style.background = '#02b3e4';
-    // }
-    //
-    // this.init();
+    /*方法一：代码逻辑重置*/
+    var k = 0,
+        stepNumber = document.getElementById('stepNumber');
+        stepNumber.textContent = 'step number is: 0';
+
+    myDeck.starsNum(k);
+    myTimer.stopTime();
+    myDeck.allIndex = [];
+
+    for (var i = 0; i < this.list.length; i++) {
+        this.list[i].style.webkitAnimation = '';
+        this.list[i].style.cssText = 'transform:rotateY(180deg)';
+        this.list[i].lastElementChild.style.background = '#02b3e4';
+    }
+
+    this.init();
 
 
     /*方法二：简单明了*/
-    window.location.reload();
+    // window.location.reload();
 
 };
 
@@ -100,13 +100,16 @@ var Deck = function (list, shade) {
  * @return {array} randomList --随机编排后的list
  */
 Deck.prototype.getLiList = function () {
-    var tmpList = [];
-    for (var i = 0; i < this.list.length; i++) {
-        var tmpList_item = {};
-        tmpList_item = this.list[i];
-        tmpList.push(tmpList_item);
-    }
+    /*方法一：比较勉强，不建议*/
+    // var tmpList = [];
+    // for (var i = 0; i < this.list.length; i++) {
+    //     var tmpList_item = {};
+    //     tmpList_item = this.list[i];
+    //     tmpList.push(tmpList_item);
+    // }
 
+    /*方法二：灵活建议*/
+    var tmpList = Array.from(this.list);
     var randomList = shuffle(tmpList);
     this.renderLiList(randomList);
 };
@@ -116,6 +119,7 @@ Deck.prototype.getLiList = function () {
  * @param {array} array --随机编排后的list
  */
 Deck.prototype.renderLiList = function (array) {
+
     var getUL = document.getElementById('deck');
     getUL.innerHTML = '';
     for (var i = 0; i < array.length; i++) {
@@ -132,14 +136,12 @@ Deck.prototype.listenCardClick = function () {
     for (var i = 0; i < self.list.length; i++) {
         self.list[i].count = i;
         self.list[i].onclick = function () {
-            // this.style.cssText = 'animation:changeRotate 0.6s ease forwards;';
-
 
             if (this.getAttribute('style') === 'transform: rotateY(180deg);' || self.lastClickList === this) return;
 
             self.lastClickList = this;
             this.lastElementChild.style.background = '#02b3e4';
-            this.style.cssText = 'animation:changeRotate 0.6s ease forwards;';
+            this.style.cssText = 'animation:changeRotate 0.6s ease;';
             this.addEventListener('webkitAnimationEnd', function () {
                 this.style.webkitAnimation = '';
             });
@@ -179,11 +181,6 @@ Deck.prototype.judgeResult = function (index, k) {
                 self.list[clickList_two[j].i].style.cssText =
                     'animation:changeScale 0.6s ease';
                 self.list[clickList_two[j].i].lastElementChild.style.background = '#02ccba';
-                self.list[clickList_two[j].i].addEventListener('webkitAnimationEnd', function () {
-                    this.style.webkitAnimation = '';
-                    this.style.cssText = 'transform: rotateY(180deg);';
-                    // this.setAttribute('style','');
-                });
             }
 
             //记录匹对成功个数
@@ -199,7 +196,6 @@ Deck.prototype.judgeResult = function (index, k) {
                 self.list[clickList_two[j].i].lastElementChild.style.background = '#de3f40';
                 self.list[clickList_two[j].i].addEventListener('webkitAnimationEnd', function () {
                     this.style.webkitAnimation = 'changeRotate 0.6s ease reverse forwards';
-                    this.style.cssText = 'transform:rotateY(0deg)';
                 });
             }
         }
