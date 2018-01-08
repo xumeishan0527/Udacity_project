@@ -12,11 +12,7 @@ There is front-end development (advanced) project，which is a nano-degree proje
 Challenges of the actual project
 ---
 **Memory game** -- Build a stylish, great design, versatile memory game.
-
 **Arcade Game** -- Obtain visual resources and a game loop engine; with these tools, you have to add a series of entities (both player characters and enemies) to the game to recreate the classic arcade game Frog Crossing the River.
-
 **Subscribe reader test** -- Complete test suite application.
-
 **Neighborhood map** -- Develop a one-page application that has a map of the area in your area or that you want to visit. Then you'll add other features to the map, including highlighted locations, third-party data about those locations, and different ways to browse content.
-
 **Book tracking application** -- Create a shelf app that allows you to select and categorize the books you read, the books you are reading, and the books you want to read.
