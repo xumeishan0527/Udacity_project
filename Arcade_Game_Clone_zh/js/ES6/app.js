@@ -1,6 +1,8 @@
-const cell_height = 83;
-const cell_heightTop = 55;
-const cell_width = 101;
+const cell = {
+    height: 83,
+    heightTop: 55,
+    width: 101
+};
 
 class Actor {
     constructor(x, y) {
@@ -63,9 +65,9 @@ class Player extends Actor {
     update() {
         if (this.y === -13) {
             allEnemies = [
-                new Enemy(randomXaxis(), cell_heightTop, speed()),
-                new Enemy(randomXaxis(), cell_height + cell_heightTop, speed()),
-                new Enemy(randomXaxis(), cell_height * 2 + cell_heightTop, speed())
+                new Enemy(randomXaxis(), cell.heightTop, speed()),
+                new Enemy(randomXaxis(), cell.height + cell.heightTop, speed()),
+                new Enemy(randomXaxis(), cell.height * 2 + cell.heightTop, speed())
             ];
             
             player = new Player();
@@ -81,20 +83,20 @@ class Player extends Actor {
         switch (move) {
             case 'left':
                 if (this.x > 0) {
-                    this.x = this.x - cell_width;
+                    this.x = this.x - cell.width;
                 }
                 break;
             case 'right':
-                if (this.x < ctx.canvas.width - cell_width) {
-                    this.x += cell_width;
+                if (this.x < ctx.canvas.width - cell.width) {
+                    this.x += cell.width;
                 }
                 break;
             case 'up':
-                if (this.y > cell_heightTop) {
-                    this.y -= cell_height;
+                if (this.y > cell.heightTop) {
+                    this.y -= cell.height;
                     break;
                 }
-                if (this.y === cell_heightTop) {
+                if (this.y === cell.heightTop) {
                     this.y -= 68;
                 }
                 break;
@@ -104,7 +106,7 @@ class Player extends Actor {
                     break;
                 }
                 if (this.y < 387) {
-                    this.y += cell_height;
+                    this.y += cell.height;
                 }
                 break;
         }
@@ -123,13 +125,13 @@ const randomXaxis = () => Math.floor(Math.random() * 100 - 300);
 const rowNum = () => {
     let randomNum = Math.floor(Math.random() * 10);
     if (randomNum < 3.3) {
-        return cell_heightTop;
+        return cell.heightTop;
     }
     if (randomNum >= 3.3 && randomNum < 6.6) {
-        return cell_height + cell_heightTop;
+        return cell.height + cell.heightTop;
     }
     if (randomNum >= 6.6) {
-        return cell_height * 2 + cell_heightTop;
+        return cell.height * 2 + cell.heightTop;
     }
 };
 
@@ -143,7 +145,7 @@ setInterval(function () {
     if (allEnemies.length < 10) {
         allEnemies.push(new Enemy(randomXaxis(), rowNum(), speed()));
     }
-    console.log(allEnemies.length);
+    // console.log(allEnemies.length);
 }, 1500);
 
 
@@ -151,9 +153,9 @@ setInterval(function () {
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
 // 把玩家对象放进一个叫 player 的变量里面
 let allEnemies = [
-    new Enemy(randomXaxis(), cell_heightTop, speed()),
-    new Enemy(randomXaxis(), cell_height + cell_heightTop, speed()),
-    new Enemy(randomXaxis(), cell_height * 2 + cell_heightTop, speed())
+    new Enemy(randomXaxis(), cell.heightTop, speed()),
+    new Enemy(randomXaxis(), cell.height + cell.heightTop, speed()),
+    new Enemy(randomXaxis(), cell.height * 2 + cell.heightTop, speed())
 ];
 
 let player = new Player();
