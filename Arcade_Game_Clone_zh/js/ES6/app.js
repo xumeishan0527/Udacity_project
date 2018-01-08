@@ -1,11 +1,25 @@
+const cell_height = 83;
+const cell_heightTop = 55;
+const cell_width = 101;
+
+class Actor {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
+
 // 这是我们的玩家要躲避的敌人
-class Enemy {
+class Enemy extends Actor {
     constructor(x, y, speed) {
+        super(x, y);
         // 要应用到每个敌人的实例的变量写在这里
         // 我们已经提供了一个来帮助你实现更多
         // 敌人的图片，用一个我们提供的工具函数来轻松的加载文件
-        this.x = x;
-        this.y = y;
         this.speed = speed;
         this.sprite = 'images/enemy-bug.png';
     }
@@ -15,7 +29,7 @@ class Enemy {
     update(dt) {
         // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
         // 都是以同样的速度运行的
-        if (this.x > 520) {
+        if (this.x > ctx.canvas.width) {
             this.x = -120;
         }
         this.x += dt * this.speed;
@@ -24,7 +38,7 @@ class Enemy {
     
     // 此为游戏必须的函数，用来在屏幕上画出敌人，
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        super.render();
     }
     
     //碰撞检测函数
@@ -39,10 +53,9 @@ class Enemy {
 
 // 现在实现你自己的玩家类
 // 这个类需要一个 update() 函数， render() 函数和一个 handleInput()函数
-class Player {
+class Player extends Actor {
     constructor(x = 202, y = 387) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.sprite = 'images/char-boy.png';
     }
     
@@ -50,17 +63,17 @@ class Player {
     update() {
         if (this.y === -13) {
             allEnemies = [
-                new Enemy(randomXaxis(), 55, speed()),
-                new Enemy(randomXaxis(), 83 + 55, speed()),
-                new Enemy(randomXaxis(), 83 * 2 + 55, speed())
+                new Enemy(randomXaxis(), cell_heightTop, speed()),
+                new Enemy(randomXaxis(), cell_height + cell_heightTop, speed()),
+                new Enemy(randomXaxis(), cell_height * 2 + cell_heightTop, speed())
             ];
-    
+            
             player = new Player();
         }
     }
     
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        super.render();
     }
     
     //上下左右键可使玩家移动，但不得超过游戏区域
@@ -68,20 +81,20 @@ class Player {
         switch (move) {
             case 'left':
                 if (this.x > 0) {
-                    this.x = this.x - 101;
+                    this.x = this.x - cell_width;
                 }
                 break;
             case 'right':
-                if (this.x < 404) {
-                    this.x += 101;
+                if (this.x < ctx.canvas.width - cell_width) {
+                    this.x += cell_width;
                 }
                 break;
             case 'up':
-                if (this.y > 55) {
-                    this.y -= 83;
+                if (this.y > cell_heightTop) {
+                    this.y -= cell_height;
                     break;
                 }
-                if (this.y === 55) {
+                if (this.y === cell_heightTop) {
                     this.y -= 68;
                 }
                 break;
@@ -91,12 +104,13 @@ class Player {
                     break;
                 }
                 if (this.y < 387) {
-                    this.y += 83;
+                    this.y += cell_height;
                 }
                 break;
         }
     }
 }
+
 
 /**
  * @description 随机初始化敌人X坐标函数
@@ -109,13 +123,13 @@ const randomXaxis = () => Math.floor(Math.random() * 100 - 300);
 const rowNum = () => {
     let randomNum = Math.floor(Math.random() * 10);
     if (randomNum < 3.3) {
-        return 55;
+        return cell_heightTop;
     }
     if (randomNum >= 3.3 && randomNum < 6.6) {
-        return 83 + 55;
+        return cell_height + cell_heightTop;
     }
     if (randomNum >= 6.6) {
-        return 83 * 2 + 55;
+        return cell_height * 2 + cell_heightTop;
     }
 };
 
@@ -137,9 +151,9 @@ setInterval(function () {
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
 // 把玩家对象放进一个叫 player 的变量里面
 let allEnemies = [
-    new Enemy(randomXaxis(), 55, speed()),
-    new Enemy(randomXaxis(), 83 + 55, speed()),
-    new Enemy(randomXaxis(), 83 * 2 + 55, speed())
+    new Enemy(randomXaxis(), cell_heightTop, speed()),
+    new Enemy(randomXaxis(), cell_height + cell_heightTop, speed()),
+    new Enemy(randomXaxis(), cell_height * 2 + cell_heightTop, speed())
 ];
 
 let player = new Player();
