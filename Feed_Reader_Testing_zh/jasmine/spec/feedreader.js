@@ -16,6 +16,11 @@ $(function () {
          * 比如你把 app.js 里面的 allFeeds 变量变成一个空的数组然后刷新
          * 页面看看会发生什么。
         */
+        let sameDetection = key => {
+            expect(key).toBeDefined();
+            expect(key).not.toBe('');
+        };
+        
         it('are defined', function () {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
@@ -26,9 +31,8 @@ $(function () {
          */
         it('Non-null links', function () {
             allFeeds.map(function (feed) {
-                expect(feed.url).toBeDefined();
-                expect(feed.url).not.toBe('');
-            })
+                sameDetection(feed.url);
+            });
         });
         
         /* TODO:
@@ -36,9 +40,8 @@ $(function () {
          */
         it('Non-null name', function () {
             allFeeds.map(function (feed) {
-                expect(feed.name).toBeDefined();
-                expect(feed.name).not.toBe('');
-            })
+                sameDetection(feed.name);
+            });
         });
     });
     
@@ -61,7 +64,7 @@ $(function () {
         });
         
         it('hidden by default', function () {
-            expect($body.attr('class')).toBe('menu-hidden');
+            expect($body.hasClass("menu-hidden")).toBeTruthy();
         });
         
         /* TODO:
@@ -73,7 +76,7 @@ $(function () {
             $menuIcon.trigger('click');
             expect($body.hasClass("menu-hidden")).toBeFalsy();
             $menuIcon.trigger('click');
-            expect($body.hasClass("menu-hidden")).toBeTruthy();
+            expect($body.hasClass("menu-hidden")).toBe(true);
         })
     });
     
@@ -91,14 +94,11 @@ $(function () {
         const $feedList = $('.feed-list a');
         
         beforeEach(function (done) {
-            loadFeed($feedList.data('id'), function () {
-                done();
-            });
+            loadFeed($feedList.data('id'), done);
         });
         
-        it('LoadFeed normal work', function (done) {
+        it('LoadFeed normal work', function () {
             expect($feed.html()).not.toBe('');
-            done();
         })
     });
     
@@ -119,7 +119,7 @@ $(function () {
         
         beforeEach(function (done) {
             loadFeed(0, function () {
-                oldHtml =$('.feed');
+                oldHtml = $('.feed');
                 loadFeed(2, function () {
                     newHtml = $('.feed');
                     done();
@@ -130,8 +130,6 @@ $(function () {
         it('The content in loadFeed changes', function () {
             expect(oldHtml).not.toBe(newHtml);
         });
-        
-        
     });
     
     
