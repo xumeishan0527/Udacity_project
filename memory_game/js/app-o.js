@@ -29,15 +29,16 @@ Game.prototype.init = function () {
         myTimer.startTime();
         //调用监听卡片点击事件
         myDeck.listenCardClick();
+        // console.log(self.list[0].lastElementChild);
         for (var i = 0; i < self.list.length; i++) {
             self.list[i].style.cssText =
-                'animation:changeRotate 0.6s ease reverse forwards;' +
-                'transform:rotateY(0)';
+                'animation:changeRotate .6s ease forwards;' +
+                'transform:rotateY(180deg)';
             self.list[i].addEventListener('webkitAnimationEnd', function () {
                 this.style.webkitAnimation = '';
             });
         }
-    }, 2000);
+    }, 10000);
 
 
     //监听重置按键点击事件
@@ -66,7 +67,7 @@ Game.prototype.restart = function () {
     /*方法一：代码逻辑重置*/
     var k = 0,
         stepNumber = document.getElementById('stepNumber');
-        stepNumber.textContent = 'step number is: 0';
+    stepNumber.textContent = 'step number is: 0';
 
     myDeck.starsNum(k);
     myTimer.stopTime();
@@ -74,7 +75,7 @@ Game.prototype.restart = function () {
 
     for (var i = 0; i < this.list.length; i++) {
         this.list[i].style.webkitAnimation = '';
-        this.list[i].style.cssText = 'transform:rotateY(180deg)';
+        this.list[i].style.cssText = 'transform:rotateY(0deg)';
         this.list[i].lastElementChild.style.background = '#02b3e4';
     }
 
@@ -136,12 +137,11 @@ Deck.prototype.listenCardClick = function () {
     for (var i = 0; i < self.list.length; i++) {
         self.list[i].count = i;
         self.list[i].onclick = function () {
-
-            if (this.getAttribute('style') === 'transform: rotateY(180deg);' || self.lastClickList === this) return;
+            if (this.getAttribute('style') === 'transform: rotateY(0);' || self.lastClickList === this) return;
 
             self.lastClickList = this;
             this.lastElementChild.style.background = '#02b3e4';
-            this.style.cssText = 'animation:changeRotate 0.6s ease;';
+            this.style.cssText = 'animation:changeRotate 0.6s ease reverse;transform:rotateY(0);';
             this.addEventListener('webkitAnimationEnd', function () {
                 this.style.webkitAnimation = '';
             });
@@ -195,7 +195,7 @@ Deck.prototype.judgeResult = function (index, k) {
                     'animation:changeSkew 0.6s ease;transform-origin:50% 150%';
                 self.list[clickList_two[j].i].lastElementChild.style.background = '#de3f40';
                 self.list[clickList_two[j].i].addEventListener('webkitAnimationEnd', function () {
-                    this.style.webkitAnimation = 'changeRotate 0.6s ease reverse forwards';
+                    this.style.webkitAnimation = 'changeRotate 0.6s ease forwards';
                 });
             }
         }
